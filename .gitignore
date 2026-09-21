@@ -1,0 +1,15 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes (local data)
+localstack_data/
+.docker/
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/
