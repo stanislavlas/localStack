@@ -2,7 +2,7 @@ name: "LocalStack"
 description: "General-purpose LocalStack DynamoDB add-on. Shared across multiple apps."
 # Bump version on every push so HA shows "Update available" in the add-on store.
 # Use MAJOR.MINOR.PATCH: patch for bug fixes, minor for new features.
-version: "1.1.0"
+version: "1.2.0"
 slug: "localstack"
 init: false
 host_network: true

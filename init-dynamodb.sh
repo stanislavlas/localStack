@@ -60,21 +60,55 @@ create_table_if_not_exists "personalFinance_categories" \
   --key-schema AttributeName=categoryId,KeyType=HASH \
   --attribute-definitions \
     AttributeName=categoryId,AttributeType=S \
-    AttributeName=userId,AttributeType=S \
-    AttributeName=householdId,AttributeType=S \
+    AttributeName=ownerKey,AttributeType=S \
   --global-secondary-indexes '[
     {
-      "IndexName": "userId-index",
-      "KeySchema": [{"AttributeName": "userId", "KeyType": "HASH"}],
-      "Projection": {"ProjectionType": "ALL"}
-    },
-    {
-      "IndexName": "householdId-index",
-      "KeySchema": [{"AttributeName": "householdId", "KeyType": "HASH"}],
+      "IndexName": "ownerKey-index",
+      "KeySchema": [{"AttributeName": "ownerKey", "KeyType": "HASH"}],
       "Projection": {"ProjectionType": "ALL"}
     }
   ]' \
   --billing-mode PAY_PER_REQUEST
+
+# Seed global default categories (ownerKey = "global", isDefault = true)
+echo "Seeding global default categories..."
+NOW=$(date +%s)
+for ROW in \
+  "00000000-0000-0000-0000-000000000001|Salary|💼|#1D9E75|INCOME" \
+  "00000000-0000-0000-0000-000000000002|Rent|🏠|#D85A30|EXPENSE" \
+  "00000000-0000-0000-0000-000000000003|Energy|🔥|#EF9F27|EXPENSE" \
+  "00000000-0000-0000-0000-000000000004|Groceries|🛒|#D4537E|EXPENSE" \
+  "00000000-0000-0000-0000-000000000005|Transport|🚗|#BA7517|EXPENSE" \
+  "00000000-0000-0000-0000-000000000006|Clothing|👕|#F0997B|EXPENSE" \
+  "00000000-0000-0000-0000-000000000007|Subscription|📺|#AFA9EC|EXPENSE" \
+  "00000000-0000-0000-0000-000000000008|Other|❓|#D3D1C7|EXPENSE" \
+  "00000000-0000-0000-0000-000000000009|Stocks|📈|#7F77DD|INVESTMENT" \
+  "00000000-0000-0000-0000-000000000010|Savings|🏦|#534AB7|INVESTMENT"
+do
+  IFS='|' read -r ID NAME EMOJI COLOR TYPE <<< "$ROW"
+  # Only seed if the item doesn't already exist
+  EXISTING=$(aws --endpoint-url=$ENDPOINT --region $REGION dynamodb get-item \
+    --table-name personalFinance_categories \
+    --key "{\"categoryId\": {\"S\": \"$ID\"}}" 2>&1)
+  if echo "$EXISTING" | grep -q '"Item"'; then
+    echo "Category $NAME already exists, skipping."
+  else
+    aws --endpoint-url=$ENDPOINT --region $REGION dynamodb put-item \
+      --table-name personalFinance_categories \
+      --item "{
+        \"categoryId\": {\"S\": \"$ID\"},
+        \"ownerKey\":   {\"S\": \"global\"},
+        \"name\":       {\"S\": \"$NAME\"},
+        \"emoji\":      {\"S\": \"$EMOJI\"},
+        \"color\":      {\"S\": \"$COLOR\"},
+        \"type\":       {\"S\": \"$TYPE\"},
+        \"isDefault\":  {\"BOOL\": true},
+        \"createdAt\":  {\"N\": \"$NOW\"}
+      }"
+    echo "Seeded: $NAME"
+  fi
+done
+echo "Global default categories seeded."
 
 # personalFinance_households
 create_table_if_not_exists "personalFinance_households" \
