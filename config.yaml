@@ -1,9 +1,9 @@
-name: "Personal Finance - LocalStack"
-description: "LocalStack DynamoDB for Personal Finance app"
+name: "LocalStack"
+description: "General-purpose LocalStack DynamoDB add-on. Shared across multiple apps."
 # Bump version on every push so HA shows "Update available" in the add-on store.
 # Use MAJOR.MINOR.PATCH: patch for bug fixes, minor for new features.
-version: "1.0.0"
-slug: "personalfinance-localstack"
+version: "1.0.1"
+slug: "localstack"
 init: false
 host_network: true
 arch:
