@@ -119,5 +119,12 @@ create_table_if_not_exists "personalFinance_entries" \
   ]' \
   --billing-mode PAY_PER_REQUEST
 
+# personalFinance_verification_codes
+create_table_if_not_exists "personalFinance_verification_codes" \
+  --key-schema AttributeName=code,KeyType=HASH \
+  --attribute-definitions \
+    AttributeName=code,AttributeType=S \
+  --billing-mode PAY_PER_REQUEST
+
 echo "All tables initialized."
 aws --endpoint-url=$ENDPOINT --region $REGION dynamodb list-tables
