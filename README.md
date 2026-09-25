@@ -10,7 +10,7 @@ Tables are prefixed by app name: `<appName>_<tableName>`.
 
 | App | Tables |
 |---|---|
-| personalFinance | `personalFinance_users`, `personalFinance_refresh_tokens`, `personalFinance_categories`, `personalFinance_households`, `personalFinance_entries` |
+| moni | `moni_users`, `moni_refresh_tokens`, `moni_categories`, `moni_households`, `moni_entries` |
 
 ## Adding tables for a new app
 
