@@ -16,6 +16,7 @@ EXPECTED_TABLES=(
   "moni_entries"
   "moni_verification_codes"
   "moni_household_invitations"
+  "moni_recurring_entries"
 )
 
 delete_unknown_tables() {
@@ -218,6 +219,21 @@ create_table_if_not_exists "moni_household_invitations" \
     {
       "IndexName": "householdId-index",
       "KeySchema": [{"AttributeName": "householdId", "KeyType": "HASH"}],
+      "Projection": {"ProjectionType": "ALL"}
+    }
+  ]' \
+  --billing-mode PAY_PER_REQUEST
+
+# moni_recurring_entries
+create_table_if_not_exists "moni_recurring_entries" \
+  --key-schema AttributeName=recurringId,KeyType=HASH \
+  --attribute-definitions \
+    AttributeName=recurringId,AttributeType=S \
+    AttributeName=userId,AttributeType=S \
+  --global-secondary-indexes '[
+    {
+      "IndexName": "userId-index",
+      "KeySchema": [{"AttributeName": "userId", "KeyType": "HASH"}],
       "Projection": {"ProjectionType": "ALL"}
     }
   ]' \
