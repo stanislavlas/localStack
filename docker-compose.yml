@@ -1,22 +1,17 @@
 services:
-  mylocalstack:
+  dynamodb-local:
     build: .
-    container_name: myLocalstack
+    container_name: dynamodb-local
     ports:
       - "4567:4566"
-    environment:
-      - SERVICES=dynamodb
-      - DEFAULT_REGION=eu-central-1
-      - AWS_DEFAULT_REGION=eu-central-1
-      - DEBUG=1
     volumes:
-      - localstack_data:/data
+      - dynamodb_data:/data
     networks:
-      - localstack-network
+      - dynamodb-network
 
 volumes:
-  localstack_data:
+  dynamodb_data:
 
 networks:
-  localstack-network:
+  dynamodb-network:
     driver: bridge

@@ -1,6 +1,7 @@
-FROM localstack/localstack:community-archive
+FROM amazon/dynamodb-local:latest
 
-# Copy entrypoint and init script
+USER root
+
 COPY run.sh /run.sh
 COPY init-dynamodb.sh /init-dynamodb.sh
 RUN chmod +x /run.sh /init-dynamodb.sh

@@ -1,8 +1,8 @@
-name: "LocalStack"
-description: "General-purpose LocalStack DynamoDB add-on. Shared across multiple apps."
+name: "DynamoDB Local"
+description: "Amazon DynamoDB Local — persistent DynamoDB for Moni app. Data survives restarts."
 # Bump version on every push so HA shows "Update available" in the add-on store.
 # Use MAJOR.MINOR.PATCH: patch for bug fixes, minor for new features.
-version: "1.4.0"
+version: "2.0.0"
 slug: "localstack"
 init: false
 host_network: true
