@@ -2,7 +2,7 @@ name: "DynamoDB Local"
 description: "Amazon DynamoDB Local — persistent DynamoDB for Moni app. Data survives restarts."
 # Bump version on every push so HA shows "Update available" in the add-on store.
 # Use MAJOR.MINOR.PATCH: patch for bug fixes, minor for new features.
-version: "2.0.0"
+version: "2.0.1"
 slug: "localstack"
 init: false
 host_network: true
